@@ -6,14 +6,14 @@ from .models import CustomUser
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ("login", "nome", "sobrenome", "email", "cpf", "telefone",
-                    "idade", "is_staff", "is_active")
+    list_display = ("login", "name", "last_name", "email", "cpf", "phone",
+                    "age", "is_staff", "is_active")
     list_filter = ("is_staff", "is_active")
 
     fieldsets = (
         (None, {"fields": ("login", "password")}),
-        ("Informações Pessoais", {"fields": ("nome", "sobrenome", "idade",
-                                             "cpf", "email", "telefone")}),
+        ("Informações Pessoais", {"fields": ("name", "last_name", "age",
+                                             "cpf", "email", "phone")}),
         ("Permissões", {"fields": ("is_staff", "is_active", "is_superuser",
                                    "groups", "user_permissions")}),
         ("Datas importantes", {"fields": ("last_login",)}),
@@ -22,11 +22,11 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("login", "nome", "sobrenome", "idade", "cpf", "email",
-                       "telefone", "password1", "password2", "is_staff",
+            "fields": ("login", "name", "last_name", "age", "cpf", "email",
+                       "phone", "password1", "password2", "is_staff",
                        "is_active")}
          ),
     )
 
-    search_fields = ("login", "email", "cpf", "nome", "sobrenome")
+    search_fields = ("login", "email", "cpf", "name", "last_name")
     ordering = ("login",)

@@ -29,10 +29,10 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser, PermissionsMixin):
     name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(null=True, blank=True)
     cpf = models.CharField(max_length=11, unique=True)
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=15, null=True, blank=True)
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=128)
 

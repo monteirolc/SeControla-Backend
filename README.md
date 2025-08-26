@@ -53,3 +53,23 @@ ALLOWED_HOSTS=127.0.0.1,localhost
 python manage.py migrate
 python manage.py runserver
 ```
+
+### Estrutura
+
+backend/
+├── balance/ # app principal -> "conta geral"
+│ ├── models.py # saldo consolidado
+│ └── ...
+├── expenses/ # gastos eventuais
+│ ├── models.py
+│ └── ...
+├── fixed_expenses/ # gastos recorrentes
+│ ├── models.py
+│ └── ...
+├── incomes/ # ganhos eventuais
+│ ├── models.py
+│ └── ...
+├── shared_accounts/ # vínculo entre usuários
+│ ├── models.py
+│ └── ...
+└── login/ # seu CustomUser

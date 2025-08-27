@@ -25,8 +25,28 @@ SECRET_KEY = 'django-7*po0^1y0t=5g*%0^1y0t=5gt566__zk8l)cl!a^q_iauz$v0kdh057ru'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Next.js
+    "https://meu-frontend.com"  # produção
+]
+
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "authorization",
+]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
 
 # Application definition
 
@@ -40,11 +60,15 @@ INSTALLED_APPS = [
     'rest_framework',
     # my_apps "django-admin startapp ***"
     'login',
+    'balance',
+    # cors para aceitar diferentes portas de acesso
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

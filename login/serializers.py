@@ -28,4 +28,5 @@ class UserLoginSerializer(serializers.Serializer):
                             password=data.get('password'))
         if not user:
             raise serializers.ValidationError("Invalid login credentials")
+        data['user'] = user  # adiciona o user validado para a view
         return data

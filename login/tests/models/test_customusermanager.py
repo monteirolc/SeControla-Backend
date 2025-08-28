@@ -32,7 +32,7 @@ class TestCustomUserManager:
                 email="lucas@example.com",
                 cpf="12345678901"
             )
-        assert "The Username field must be set" in str(excinfo.value)
+        assert "The given username must be set" in str(excinfo.value)
 
     def test_create_superuser_success(self):
         admin = User.objects.create_superuser(

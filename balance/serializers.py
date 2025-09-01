@@ -17,4 +17,4 @@ class BalanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Balance
         fields = ["id", "name",  "created_at", "total_incomes",
-                  "owner"]  # , "shared_accounts"]
+                  "total_expenses", "owner"]  # , "shared_accounts"]

@@ -1,21 +1,20 @@
 from rest_framework import serializers
 from .models import Balance
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class BalanceSerializer(serializers.ModelSerializer):
-    total_expenses = serializers.SerializerMethodField()
-    total_incomes = serializers.SerializerMethodField()
-    balance = serializers.SerializerMethodField()
+    owner = serializers.ReadOnlyField(source="user.username")
+    # shared_accounts = serializers.SlugRelatedField(
+    #     many=True,
+    #     slug_field="username",
+    #     queryset=User.objects.all(),
+    #     required=False
+    # )
 
     class Meta:
         model = Balance
-        fields = '__all__'
-
-    def get_total_expenses(self, obj):
-        return obj.total_expenses()
-
-    def get_total_incomes(self, obj):
-        return obj.total_incomes()
-
-    def get_balance(self, obj):
-        return obj.balance()
+        fields = ["id", "name",  "created_at", "total_incomes",
+                  "owner"]  # , "shared_accounts"]

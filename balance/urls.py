@@ -1,6 +1,10 @@
-from django.urls import path
-from .views import BalanceListView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import BalanceViewSet
+
+router = DefaultRouter()
+router.register(r'', BalanceViewSet, basename='balance')
 
 urlpatterns = [
-    path('', BalanceListView.as_view(), name='balance-list'),
+    path('', include(router.urls)),
 ]

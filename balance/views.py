@@ -1,18 +1,19 @@
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import generics, status
+from rest_framework import viewsets, permissions
+from django.db.models import Q
 from .models import Balance
 from .serializers import BalanceSerializer
 
 
-class BalanceListView(generics.ListCreateAPIView):
-    queryset = Balance.objects.all()
+class BalanceViewSet(viewsets.ModelViewSet):
     serializer_class = BalanceSerializer
-    permission_classes = [IsAuthenticated]  # só usuários logados
+    permission_classes = [permissions.IsAuthenticated]
 
-    def get(self):
-        # só retorna o balance do usuário logado
-        return Response(
-            Balance.objects.filter(owner=self.request.user),
-            status=status.HTTP_200_OK
-        )
+    def get_queryset(self):
+        # O usuário só pode ver balances dele OU compartilhados com ele
+        return Balance.objects.filter(
+            Q(owner=self.request.user)  # |Q(shared_accounts=self.request.user)
+        ).distinct()
+
+    def perform_create(self, serializer):
+        # Ao criar, o balance é sempre associado ao usuário logado
+        serializer.save(owner=self.request.user)

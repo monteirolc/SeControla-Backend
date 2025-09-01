@@ -8,8 +8,12 @@ class IncomeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # Retorna apenas os incomes do balance do usuário logado
-        return Income.objects.filter(balance__user=self.request.user)
+        user = self.request.user
+        income = Income.objects.filter(
+            created_by=user,
+            balance__account_type="i"
+        )
+        return income
 
     def perform_create(self, serializer):
         # Associa automaticamente ao balance principal do usuário

@@ -8,7 +8,12 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Expense.objects.filter(created_by=self.request.user)
+        user = self.request.user
+        expense = Expense.objects.filter(
+            created_by=user,
+            balance__account_type="e"
+        )
+        return expense
 
     def paginate_queryset(self, queryset):
         return super().paginate_queryset(queryset)

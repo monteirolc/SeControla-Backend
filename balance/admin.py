@@ -4,9 +4,7 @@ from .models import Balance
 
 @admin.register(Balance)
 class BalanceAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'name', 'created_at', 'date',
-                    'total_expenses', 'total_incomes')
-    search_fields = ('owner', 'created_at', 'date')
-    list_filter = ('created_at', 'owner')
-
-# Register your models here.
+    list_display = ("name", "owner", "date", "total_incomes", "created_at")
+    search_fields = ("name", "date", "owner")
+    list_filter = ("created_at",)
+    # filter_horizontal = ("shared_accounts",)

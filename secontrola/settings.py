@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,9 +26,32 @@ SECRET_KEY = 'django-7*po0^1y0t=5g*%0^1y0t=5gt566__zk8l)cl!a^q_iauz$v0kdh057ru'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(weeks=1),  # <- 1 semana (Não recomendado)  # noqa
+    "REFRESH_TOKEN_LIFETIME": timedelta(weeks=4), # <- opcional (1 mês, por exemplo) # noqa
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+}
+
 ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Next.js
@@ -61,14 +85,15 @@ INSTALLED_APPS = [
     # my_apps "django-admin startapp ***"
     'login',
     'balance',
+    'incomes',
     # cors para aceitar diferentes portas de acesso
-    "corsheaders",
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -128,6 +153,10 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'login.CustomUser'
 
 USERNAME_FIELD = 'username'
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

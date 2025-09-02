@@ -13,27 +13,38 @@ class Balance(models.Model):
         ("i", "Receitas"),
         ("e", "Despesas"),
         ("fe", "Despesas Fixas"),
+        ("fi", "Receitas Fixas"),
     ], default="i", blank=False, null=False)
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def total_fixed_expenses(self):
+        from fixed_expenses.models import FixedExpense
+        fixed_expense_value = FixedExpense.objects.filter(
+            balance=self).aggregate(
+            models.Sum("amount"))["amount__sum"] or 0
+        return fixed_expense_value
+
     def total_expenses(self):
         from expenses.models import Expense
-        # from fixed_expenses.models import FixedExpense
-        total_eventuais = Expense.objects.filter(balance=self).aggregate(
+        total_expenses_value = Expense.objects.filter(balance=self).aggregate(
             models.Sum("amount"))["amount__sum"] or 0
-        # total_fixos = FixedExpense.objects.filter(balance=self).aggregate(
-        #     models.Sum("amount"))["amount__sum"] or 0
-        return total_eventuais  # + total_fixos
+        return total_expenses_value
+
+    def spending_sum(self):
+        return self.total_fixed_expenses() + self.total_expenses()
 
     def total_incomes(self):
         from incomes.models import Income
         return Income.objects.filter(balance=self).aggregate(
             models.Sum("amount"))["amount__sum"] or 0
 
+    def revenue_sum(self):
+        return self.total_incomes()
+
     @property
     def balance(self):
-        return self.total_incomes() - self.total_expenses()
+        return self.revenue_sum() - self.spending_sum()
 
     def __str__(self):
         return f"{self.name} ({self.owner.username})"

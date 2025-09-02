@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'balance',
     'incomes',
     'expenses',
+    'fixed_expenses',
     # cors para aceitar diferentes portas de acesso
     'corsheaders',
 ]

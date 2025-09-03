@@ -10,9 +10,9 @@ class BalanceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # O usuário só pode ver balances dele OU compartilhados com ele
+        user = self.request.user
         return Balance.objects.filter(
-            Q(owner=self.request.user)  # |Q(shared_accounts=self.request.user)
-        ).distinct()
+            Q(owner=user) | Q(shared_accounts__user=user)).distinct()
 
     def perform_create(self, serializer):
         # Ao criar, o balance é sempre associado ao usuário logado

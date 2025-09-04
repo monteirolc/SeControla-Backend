@@ -1,19 +1,11 @@
 from rest_framework import serializers
 from .models import Balance
-from shared_accounts.models import SharedAccount
-
-
-class SharedAccountBalanceSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source="user.username", read_only=True)
-
-    class Meta:
-        model = SharedAccount
-        fields = ["id", "username", "added_at"]
+from shared_accounts.serializers import SharedAccountSerializer
 
 
 class BalanceSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source="user.username")
-    shared_accounts = SharedAccountBalanceSerializer(
+    owner = serializers.ReadOnlyField(source="owner.name")
+    shared_accounts = SharedAccountSerializer(
         many=True,
         required=False,
         read_only=True

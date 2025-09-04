@@ -13,6 +13,10 @@ class SharedAccount(models.Model):
         on_delete=models.CASCADE,
         related_name="shared_balances"
     )
+
+    def first_name_shared(self):
+        return self.user.name
+
     role = models.CharField(
         max_length=50,
         choices=[
@@ -25,6 +29,9 @@ class SharedAccount(models.Model):
 
     class Meta:
         unique_together = ("balance", "user")  # evita duplicidade de acesso
+
+    def name(self):
+        return f"{self.user.username} → {self.balance.name} ({self.role})"
 
     def __str__(self):
         return f"{self.user.username} → {self.balance.name} ({self.role})"

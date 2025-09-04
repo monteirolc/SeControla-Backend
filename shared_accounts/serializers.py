@@ -10,5 +10,6 @@ class SharedAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SharedAccount
-        fields = "__all__"
+        fields = ["id", "user", "user_username", "first_name_shared",
+                  "balance_name"]
         read_only_fields = ["created_at"]

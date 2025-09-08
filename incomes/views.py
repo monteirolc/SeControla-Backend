@@ -13,8 +13,25 @@ class IncomeViewSet(viewsets.ModelViewSet):
             created_by=user,
             balance__account_type="i"
         )
+
+        datei = self.request.query_params.get('datei')  # type: ignore
+        datef = self.request.query_params.get('datef')  # type: ignore
+
+        if datei and not datef:
+            income = income.filter(
+                created_at__gte=f'{datei} 00:00:00'
+            )
+        elif datef and not datei:
+            income = income.filter(
+                created_at__lte=f'{datef} 00:00:00'
+            )
+        elif datei and datef:
+            income = income.filter(
+                created_at__range=[f'{datei} 00:00:00', f'{datef} 00:00:00']
+            )
+
         return income
 
     def perform_create(self, serializer):
         # Associa automaticamente ao balance principal do usuário
-        serializer.save(balance=self.request.user.balance)
+        serializer.save(balance=self.request.user.balance)  # type: ignore

@@ -6,7 +6,7 @@ class FixedExpense(models.Model):
     balance = models.ForeignKey("balance.Balance",
                                 on_delete=models.CASCADE,
                                 related_name="fixed_expenses")
-    name = models.CharField(max_length=200)
+    description = models.CharField(max_length=200)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     due_day = models.PositiveIntegerField()  # ex: 5 = dia 5 de cada mês
     created_by = models.ForeignKey(

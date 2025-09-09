@@ -4,7 +4,7 @@ from .models import FixedExpense, FixedExpenseInstance
 
 @admin.register(FixedExpense)
 class FixedExpenseAdmin(admin.ModelAdmin):
-    list_display = ('balance', 'name', 'amount', 'due_day',
+    list_display = ('balance', 'description', 'amount', 'due_day',
                     'start_date', 'end_date', 'active')
     search_fields = ('name',)
 
@@ -12,4 +12,4 @@ class FixedExpenseAdmin(admin.ModelAdmin):
 @admin.register(FixedExpenseInstance)
 class FixedExpenseInstanceAdmin(admin.ModelAdmin):
     list_display = ('fixed_expense', 'balance', 'amount')
-    search_fields = ('fixed_expense__name',)
+    search_fields = ('fixed_expense__description',)

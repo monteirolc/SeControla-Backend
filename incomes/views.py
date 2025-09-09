@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions
 from .models import Income
 from .serializers import IncomeSerializer
+from balance.models import Balance
 
 
 class IncomeViewSet(viewsets.ModelViewSet):
@@ -34,4 +35,13 @@ class IncomeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         # Associa automaticamente ao balance principal do usuário
-        serializer.save(balance=self.request.user.balance)  # type: ignore
+        user = self.request.user
+        balance_id = self.request._data.get("balance")  # type: ignore
+        print(self.request)
+        balance = Balance.objects.filter(
+            id=int(balance_id), account_type='i').first()
+        if not balance:
+            raise ValueError("No income balance found for the user.")
+        serializer.save(
+            balance=balance,
+            created_by=user)

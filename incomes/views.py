@@ -37,7 +37,6 @@ class IncomeViewSet(viewsets.ModelViewSet):
         # Associa automaticamente ao balance principal do usuário
         user = self.request.user
         balance_id = self.request._data.get("balance")  # type: ignore
-        print(self.request)
         balance = Balance.objects.filter(
             id=int(balance_id), account_type='i').first()
         if not balance:

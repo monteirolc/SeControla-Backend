@@ -32,7 +32,7 @@ class FixedExpense(models.Model):
         return True
 
     def __str__(self):
-        return f"{self.name} - {self.amount}"
+        return f"{self.description} - {self.amount}"
 
 
 class FixedExpenseInstance(models.Model):
@@ -50,5 +50,5 @@ class FixedExpenseInstance(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return (f"{self.fixed_expense.name} - \
+        return (f"{self.fixed_expense.description} - \
                 {self.reference_month.strftime('%m/%Y')} - {self.amount}")

@@ -14,6 +14,22 @@ class FixedExpenseViewSet(viewsets.ModelViewSet):
             created_by=user,
             balance__account_type="fe"
         )
+
+        datei = self.request.query_params.get('datei')  # type: ignore
+        datef = self.request.query_params.get('datef')  # type: ignore
+
+        if datei and not datef:
+            fixed_expense = fixed_expense.filter(
+                created_at__gte=f'{datei} 00:00:00'
+            )
+        elif datef and not datei:
+            fixed_expense = fixed_expense.filter(
+                created_at__lte=f'{datef} 00:00:00'
+            )
+        elif datei and datef:
+            fixed_expense = fixed_expense.filter(
+                created_at__range=[f'{datei} 00:00:00', f'{datef} 00:00:00']
+            )
         return fixed_expense
 
     def perform_create(self, serializer):

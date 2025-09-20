@@ -12,3 +12,12 @@ class FixedExpenseInstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = FixedExpenseInstance
         fields = '__all__'
+
+    def is_valid(self, raise_exception=False):
+        valid = super().is_valid(raise_exception=False)
+
+        if not valid:
+            if raise_exception:
+                raise serializers.ValidationError(self.errors)
+
+        return valid
